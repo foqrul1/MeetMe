@@ -21,8 +21,8 @@ public class RegistrationLogin extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(RegistrationLogin.this, LoginActivity.class);
                 startActivity(intent);
-                //finish();
-                //return;
+                finish();
+                return;
 
             }
         });
@@ -31,8 +31,8 @@ public class RegistrationLogin extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(RegistrationLogin.this, registrationActivity.class);
                 startActivity(intent);
-                //finish();
-                //return;
+                finish();
+                return;
             }
         });
     }
