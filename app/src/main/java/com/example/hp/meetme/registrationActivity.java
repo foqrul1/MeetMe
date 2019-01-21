@@ -19,6 +19,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static com.google.firebase.auth.FirebaseAuth.*;
 
 public class registrationActivity extends AppCompatActivity {
@@ -77,8 +80,12 @@ public class registrationActivity extends AppCompatActivity {
                             Toast.makeText(registrationActivity.this, "Sign Up Error", Toast.LENGTH_SHORT).show();
                         }else {
                             String userId = mAuth.getCurrentUser().getUid();
-                            DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users").child(radioButton.getText().toString()).child(userId).child("name");
-                            currentUserDB.setValue(name);
+                            DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users").child(radioButton.getText().toString()).child(userId);
+                            Map userInfo = new HashMap<>();
+                            userInfo.put("name", name);
+                            userInfo.put("ProfileImageUrl", "default");
+
+                            currentUserDB.updateChildren(userInfo);
                         }
 
                     }

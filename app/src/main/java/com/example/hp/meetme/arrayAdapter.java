@@ -7,6 +7,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -26,7 +29,19 @@ public class arrayAdapter extends ArrayAdapter<cards> {
         ImageView image = convertView.findViewById(R.id.imageView);
 
         name.setText(card_Id.getName());
-        image.setImageResource(R.mipmap.ic_launcher);
+
+        String c = card_Id.getProfileImageUrl();
+        //Toast.makeText(context, "Cards Results "+c, Toast.LENGTH_SHORT).show();
+        switch (c){
+            case "default":
+                Glide.with(convertView.getContext()).load(R.mipmap.ic_launcher).into(image);
+                break;
+            default:
+                //Glide.clear(image);
+                Glide.with(convertView.getContext()).load(card_Id.getProfileImageUrl()).into(image);
+                break;
+
+        }
         return convertView;
     }
 }

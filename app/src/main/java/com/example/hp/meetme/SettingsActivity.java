@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -40,7 +41,7 @@ public class SettingsActivity extends AppCompatActivity {
     private ImageView mProfileImage;
     private FirebaseAuth mAuth;
     private DatabaseReference mCustomerDatabase;
-    private String userId, name, phone, profileImageUrl;
+    private String userId, name, phone, ProfileImageUrl;
     private Uri resultUri;
 
     @Override
@@ -98,8 +99,18 @@ public class SettingsActivity extends AppCompatActivity {
                         mPhoneField.setText(phone);
                     }
                     if (map.get("ProfileImageUrl") != null){
-                        profileImageUrl = map.get("ProfileImageUrl").toString();
-                        Glide.with(getApplication()).load(profileImageUrl).into(mProfileImage);
+                        ProfileImageUrl = map.get("ProfileImageUrl").toString();
+
+                        switch (ProfileImageUrl){
+                            case "default":
+                                Glide.with(getApplication()).load(R.mipmap.ic_launcher).into(mProfileImage);
+                                break;
+                            default:
+                                Glide.with(getApplication()).load(ProfileImageUrl).into(mProfileImage);
+                                break;
+
+                        }
+                        Toast.makeText(SettingsActivity.this, "Find Profile Image URL", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -137,6 +148,7 @@ public class SettingsActivity extends AppCompatActivity {
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(SettingsActivity.this, "Failed", Toast.LENGTH_SHORT).show();
                     finish();
                 }
             });
@@ -146,6 +158,7 @@ public class SettingsActivity extends AppCompatActivity {
                     Task<Uri> downloadUrl = taskSnapshot.getStorage().getDownloadUrl();
                     Map userInfo = new HashMap();
                     userInfo.put("ProfileImageUrl", downloadUrl.toString());
+                    Toast.makeText(SettingsActivity.this, "success", Toast.LENGTH_SHORT).show();
                     mCustomerDatabase.updateChildren(userInfo);
 
                     finish();
